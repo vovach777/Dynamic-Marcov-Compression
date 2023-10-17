@@ -23,6 +23,26 @@
 
 */
 
+/*    This program implements DMC as described in
+
+      "Data Compression using Dynamic Markov Modelling",
+      by Gordon Cormack and Nigel Horspool
+      in Computer Journal 30:6 (December 1987)
+
+      It uses floating point so it isn't fast.  Converting to fixed point
+      isn't too difficult.
+
+      comp() and exp() implement Guazzo's version of arithmetic coding.
+
+      pinit(), predict(), and pupdate() are the DMC predictor.
+
+      pflush() reinitializes the DMC table and reclaims space
+
+      preset() starts the DMC predictor at its start state, but doesn't
+               reinitialize the tables.  This is used for packetized
+               communications, but not here.
+
+*/
 
 #include <cstdint>
 #include <vector>
@@ -140,12 +160,12 @@ namespace pack
                         {
                             reset_model();
                         } else {
-                            extend_count++;
-                            if (extend_count == (maxnodes>>8)+256) {
-                                extend_count = 0;
-                                state =  &nodebuf[ rand_xor() % maxnodes ];
-                                //std::cout << std::endl;
-                            }
+                            // extend_count++;
+                            // if (extend_count == (maxnodes>>8)+256) {
+                            //     extend_count = 0;
+                            //     state =  &nodebuf[ rand_xor() % maxnodes ];
+                            //     //std::cout << std::endl;
+                            // }
                             // std::cout << std::endl << deep << std::endl;
                             // char in;
                             // std::cin >> in;
